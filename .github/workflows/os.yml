@@ -1,31 +1,27 @@
 name: testing workflow-dispatch
 on:
   workflow_dispatch:
-    inputs: |
-      chosen-os:
+    inputs:
+      chosen_os:
+        description: "Runner OS"
         required: true
         type: choice
         options:
-        - Ubuntu-latest
-        - macOS-latest
-        - Windows-latest
-      
-    
-        chosen-inviornment:
-          required: true
-          type: choice
-          options:
+          - ubuntu-latest
+          - macos-latest
+          - windows-latest
+      environment:
+        description: "Target environment"
+        required: true
+        type: choice
+        options:
           - development
           - staging
           - production
-        
 
 jobs:
   test:
-    runs-on: [self-hosted, "${{ inputs.chosen-os }}"]
+    runs-on: ${{ inputs.chosen_os }}
     steps:
-    - run: echo Hello world!
-    - run: echo "You chose ${{ inputs.chosen-os }}"
-      shell: bash
-    - run: echo "You chose ${{ inputs.chosen-inviornment }}"
-      shell: bash
+      - name: Echo choices
+        run: echo "OS=${{ inputs.chosen_os }} ENV=${{ inputs.environment }}"
